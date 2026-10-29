@@ -21,8 +21,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: app/backend/package-lock.json
       - name: Install dependencies
         working-directory: app/backend
         run: npm install --no-audit --no-fund
@@ -33,7 +31,7 @@ jobs:
         working-directory: app/backend
         run: npm test
       - name: Scan source and dependencies
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: fs
           scan-ref: .
@@ -72,7 +70,7 @@ jobs:
       - name: Build API image
         run: docker build -t three-tier-api:ci ./app/backend
       - name: Scan API image
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: three-tier-api:ci
           format: table
@@ -82,7 +80,7 @@ jobs:
       - name: Build frontend image
         run: docker build -t three-tier-frontend:ci ./app/frontend
       - name: Scan frontend image
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: three-tier-frontend:ci
           format: table
